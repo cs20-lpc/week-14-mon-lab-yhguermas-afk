@@ -1,16 +1,77 @@
 template <typename T>
 void ArrayList<T>::bubbleSort() {
-    // TODO
-}
+    numComps = 0;
+    numSwaps = 0;
 
-template <typename T>
-void ArrayList<T>::insertionSort() {
-    // TODO
+    int n = getLength();
+
+    // Outer pass: each pass "bubbles" the largest unsorted element
+    // to its correct position at the end
+    for (int i = 0; i < n - 1; i++) {
+        // Inner pass: compare adjacent pairs from the beginning
+        // up to the last unsorted position
+        for (int j = 0; j < n - 1 - i; j++) {
+            numComps++;                          // Count every key comparison
+            if (buffer[j] > buffer[j + 1]) {
+                swap(j, j + 1);                 // Swap if out of order
+                numSwaps++;
+            }
+        }
+    }
 }
 
 template <typename T>
 void ArrayList<T>::selectionSort() {
-    // TODO
+    numComps = 0;
+    numSwaps = 0;
+
+    int n = getLength();
+
+    // Outer pass: find the minimum element for each position i
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;                        // Assume current position holds minimum
+
+        // Inner pass: scan the rest of the array for a smaller element
+        for (int j = i + 1; j < n; j++) {
+            numComps++;                          // Count every key comparison
+            if (buffer[j] < buffer[minIndex]) {
+                minIndex = j;                    // Found a new minimum
+            }
+        }
+
+        // Only swap if the minimum is not already in place
+        if (minIndex != i) {
+            swap(i, minIndex);
+            numSwaps++;
+        }
+    }
+}
+
+template <typename T>
+void ArrayList<T>::insertionSort() {
+    numComps = 0;
+    numSwaps = 0;
+
+    int n = getLength();
+
+    // Outer pass: take each element starting from index 1
+    // and insert it into its correct position in the sorted left portion
+    for (int i = 1; i < n; i++) {
+        int j = i;
+
+        // Inner pass: shift elements right until the correct spot is found
+        // Each failed comparison results in a swap (shifting right by 1)
+        while (j > 0) {
+            numComps++;                          // Count every key comparison
+            if (buffer[j] < buffer[j - 1]) {
+                swap(j, j - 1);                 // Shift element left into place
+                numSwaps++;
+                j--;
+            } else {
+                break;                           // Element is in correct position
+            }
+        }
+    }
 }
 
 /*******************************************************************************
